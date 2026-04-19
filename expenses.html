@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+    <h1>Transaction Ledger</h1>
+    <a href="{{ url_for('export_data') }}" class="btn-primary" style="width: auto; text-decoration: none;">Export CSV</a>
+</div>
+
+<div class="glass-card" style="display: flex; gap: 15px;">
+    <input type="text" id="txnSearch" placeholder="Search transactions..." class="glass-input" style="flex: 2; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 10px; color: white;">
+    <select id="catFilter" class="glass-input" style="flex: 1; padding: 12px; background: #111; border: 1px solid var(--border); border-radius: 10px; color: white;">
+        <option value="all">All Categories</option>
+        <option value="Food">Food</option>
+        <option value="Travel">Travel</option>
+        <option value="Shopping">Shopping</option>
+        <option value="Rent">Rent</option>
+    </select>
+</div>
+
+<div class="glass-card" style="padding: 0; overflow: hidden; margin-top: 20px;">
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+        <thead style="background: rgba(255,255,255,0.05);">
+            <tr>
+                <th style="padding: 20px;">Date</th>
+                <th style="padding: 20px;">Description</th>
+                <th style="padding: 20px;">Category</th>
+                <th style="padding: 20px; text-align: right;">Amount</th>
+                <th style="padding: 20px; text-align: center;">Action</th>
+            </tr>
+        </thead>
+        <tbody id="txnBody">
+            {% for exp in expenses %}
+            <tr class="txn-row" data-category="{{ exp.category }}" style="border-bottom: 1px solid var(--border);">
+                <td style="padding: 20px; color: #888;">{{ exp.date.strftime('%d %b, %Y') }}</td>
+                <td style="padding: 20px; font-weight: 600;">{{ exp.title }}</td>
+                <td style="padding: 20px;"><span style="background: var(--glass); padding: 5px 12px; border-radius: 20px; font-size: 12px;">{{ exp.category }}</span></td>
+                <td class="inr" style="padding: 20px; text-align: right; font-weight: 700; color: var(--danger);">{{ "{:,.2f}".format(exp.amount) }}</td>
+                <td style="padding: 20px; text-align: center;">
+                    <a href="{{ url_for('delete_expense', id=exp.id) }}" style="color: var(--danger); text-decoration: none; font-size: 14px;">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // Frontend Search Logic
+    const searchInput = document.getElementById('txnSearch');
+    const filterSelect = document.getElementById('catFilter');
+    const rows = document.querySelectorAll('.txn-row');
+
+    function filterTable() {
+        const query = searchInput.value.toLowerCase();
+        const category = filterSelect.value;
+
+        rows.forEach(row => {
+            const text = row.innerText.toLowerCase();
+            const rowCat = row.getAttribute('data-category');
+            const matchesSearch = text.includes(query);
+            const matchesCat = category === 'all' || rowCat === category;
+
+            row.style.display = (matchesSearch && matchesCat) ? "" : "none";
+        });
+    }
+
+    searchInput.addEventListener('keyup', filterTable);
+    filterSelect.addEventListener('change', filterTable);
+</script>
+{% endblock %}

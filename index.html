@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+    <h1>Expense Details</h1>
+    <div class="glass-card" style="padding: 10px 25px; margin: 0; border-radius: 50px;">
+        <span style="color: var(--accent); font-weight: 700;">AI INSIGHT:</span> {{ insight }}
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+    <div class="glass-card">
+        <p style="color: #888; font-size: 14px;">Total Spent</p>
+        <h2 class="inr" style="color: var(--danger);">{{ "{:,.2f}".format(total) }}</h2>
+    </div>
+    <div class="glass-card">
+        <p style="color: #888; font-size: 14px;">Available Budget</p>
+        <h2 class="inr">{{ "{:,.2f}".format(user.monthly_budget - total) }}</h2>
+    </div>
+    <div class="glass-card">
+        <p style="color: #888; font-size: 14px;">Financial Health</p>
+        <div class="progress-container">
+            <div class="progress-bar" style="width: {{ score | default(0) | int }}%;"></div>
+        </div>
+        <small>{{ score }}% Secure</small>
+    </div>
+</div>
+
+<div class="glass-card" style="margin-top: 25px; height: 350px;">
+    <h3>Spending Trends</h3>
+    <canvas id="trendChart"></canvas>
+</div>
+
+<div class="glass-card" style="margin-top: 25px;">
+    <h3>Quick Record</h3>
+    <form action="/add" method="POST" style="display: flex; gap: 15px;">
+        <input type="text" name="title" placeholder="Description" required style="flex: 2; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 10px; color: white;">
+        <input type="number" name="amount" placeholder="Amount (₹)" required style="flex: 1; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 10px; color: white;">
+        <select name="category" style="padding: 12px; background: #111; border: 1px solid var(--border); border-radius: 10px; color: white;">
+            <option>Food</option><option>Travel</option><option>Shopping</option><option>Rent</option><option>Other</option>
+        </select>
+        <button type="submit" class="btn-primary" style="width: auto;">Add</button>
+    </form>
+</div>
+
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+{% endblock %}

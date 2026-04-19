@@ -1,0 +1,9 @@
+flask
+flask-sqlalchemy
+flask-bcrypt
+pymysql
+pandas
+scikit-learn
+gunicorn
+cryptography
+python-dotenv

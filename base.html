@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CloudSpend Pro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="sidebar">
+        <h2 style="color: var(--accent); margin-bottom: 40px;">💎 CloudSpend</h2>
+        <nav>
+            <a href="{{ url_for('dashboard') }}" class="nav-link active">Dashboard</a>
+            <a href="{{ url_for('expenses_page') }}" class="nav-link">Transactions</a>
+            <a href="{{ url_for('export_data') }}" class="nav-link">Reports</a>
+            <a href="{{ url_for('logout') }}" class="nav-link" style="color: var(--danger); margin-top: 100px;">Logout</a>
+        </nav>
+    </div>
+    <div class="main-content">
+        {% block content %}{% endblock %}
+    </div>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
