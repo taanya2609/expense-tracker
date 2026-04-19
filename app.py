@@ -25,7 +25,7 @@ DB_NAME = "mysql"
 encoded_password = urllib.parse.quote_plus(Taanya263009)
 
 # Final DB URI (NO spaces, correct format)
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://admin:Taanya263009@database-1.cdw0cieuq78l.eu-north-1.rds.amazonaws.com:3306/cloud_spend"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://admin:Taanya263009@database-1.cdw0cieuq78l.eu-north-1.rds.amazonaws.com:3306/expense-tracker"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize extensions
